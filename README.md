@@ -7,7 +7,7 @@ All of the code you likely care about is in main, everything else was built with
 Future updates:
 
 Including libraries along with the VS solution for easier download and setup process.
-Centralise all of the parameters to be easily changed within the code
-Optimise variable types
-Add video of program running
+Centralise all of the parameters to be easily changed within the code.
+Optimise variable types.
+Add video of program running.
 GPU utilisation for increased performance (CPU multiprocessing causes SFML graphics library to throw a fit).
