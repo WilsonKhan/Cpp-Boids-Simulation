@@ -18,7 +18,7 @@ public:
 
     Boid(float initial_x, float initial_y, float initial_vx, float initial_vy) {
 
-        // Initialise coordinates and movement vectors
+        // Initialise coordinates and movement vectors along with interaction radii
         coords = { initial_x, initial_y };
         velocity = { initial_vx, initial_vy };
         acceleration = { 0, 0 };
@@ -45,7 +45,7 @@ public:
 
         // Calculate average velocity of neighbors
         Vector2f avgVelocity(0, 0);
-        int count = 0;
+        uint8_t count = 0;
 
         for (const Boid& otherBoid : otherBoids) {
             if (&otherBoid != this) {
@@ -71,12 +71,14 @@ public:
     }
 
     void update(float deltaTime, float screenWidth, float screenHeight, const vector<Boid>& otherBoids) {
+
+        //Sets parameters(Move into class attributes)
         float max_speed = 100;
         float attraction_damping_factor = 10;
         float repulsion_damping_factor = 15;
         float critical_repulsion_damping_factor = 2;
 
-        // For each neighbour void calculate the polar vector to it
+        // For each neighbour boid, calculate the polar vector to it
         for (const Boid& otherBoid : otherBoids) {
             if (&otherBoid != this) {
                 pair<float, float> polar_vector = calculateVector(*this, otherBoid);
@@ -173,7 +175,7 @@ public:
             r = c; g = 0.0f; b = x;
         }
 
-        // Adjust brightness
+        // Adjust brightness and create the boid circle
         r = (r + m) * 255;
         g = (g + m) * 255;
         b = (b + m) * 255;
@@ -189,31 +191,33 @@ public:
     }
 
 private:
+
+    // Boid characteristics (Will move attraction, repulsion, max speed etc parameters into here)
     vector<float> coords{ 2 };
     vector<float> velocity{ 2 };
     vector<float> acceleration{ 2 };
-    int radius;
-    int attraction_radius;
-    int repulsion_radius;
-    int critical_repulsion_radius;
+    uint8_t radius;
+    uint32_t attraction_radius;
+    uint32_t repulsion_radius;
+    uint32_t critical_repulsion_radius;
 };
 
 // Initialises boids in a grid with slight random deviation in position and velocity
 void initialiseBoids(int boids_x, int boids_y, float screenWidth, float screenHeight, std::vector<Boid>& boids) {
-    for (int i = 0; i < boids_x; i++) {
-        for (int j = 0; j < boids_y; j++) {
+    for (uint8_t i = 0; i < boids_x; i++) {
+        for (uint8_t j = 0; j < boids_y; j++) {
             Boid boid(i * (screenWidth / boids_x) + rand() % 100, j * (screenHeight / boids_y) + rand() % 100, rand() % 100, rand() % 100);
             boids.push_back(boid);
         }
     }
 }
 
-
 // Initialise boids into the boids vector
 vector<Boid> boids;
 
-int boids_x = 20;
-int boids_y = 20;
+// Sets the initial amount of boids by defining the size of the array of boids that will be generated
+uint16_t boids_x = 25;
+uint16_t boids_y = 25;
 
 int main() {
 
@@ -221,8 +225,8 @@ int main() {
     sf::VideoMode desktopMode = sf::VideoMode::getDesktopMode();
 
     // Retrieve the screen width and height
-    int screenWidth = desktopMode.width;
-    int screenHeight = desktopMode.height;
+    uint16_t screenWidth = desktopMode.width;
+    uint16_t screenHeight = desktopMode.height;
 
     sf::RenderWindow window(sf::VideoMode(screenWidth, screenHeight), "Boids Simulation", sf::Style::Fullscreen);
 
