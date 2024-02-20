@@ -192,7 +192,7 @@ public:
 
 private:
 
-    // Boid characteristics (Will move attraction, repulsion, max speed etc parameters into here)
+    // Boid characteristics
     vector<float> coords{ 2 };
     vector<float> velocity{ 2 };
     vector<float> acceleration{ 2 };
@@ -216,8 +216,8 @@ void initialiseBoids(int boids_x, int boids_y, float screenWidth, float screenHe
 vector<Boid> boids;
 
 // Sets the initial amount of boids by defining the size of the array of boids that will be generated
-uint16_t boids_x = 25;
-uint16_t boids_y = 25;
+uint16_t boids_x = 20;
+uint16_t boids_y = 20;
 
 int main() {
 
