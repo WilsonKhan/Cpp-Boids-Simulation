@@ -6,9 +6,3 @@ All of the code you likely care about is in main, everything else was built with
 
 Using under 625 (a square grid of sides 25) boids is recommended as the application is single threaded. Multithreading/multiprocessing is slower at this amount of boids due to thread overhead. The program is set to 400 boids by default which is a nice compromise between simulation speed and boid count.
 
-Future updates:
-
-Add video of program running.
-Create a packaged release version.
-Create a sprite for boids to show their direction of velocity.
-
