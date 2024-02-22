@@ -22,7 +22,7 @@ public:
         coords = { initial_x, initial_y };
         velocity = { initial_vx, initial_vy };
         acceleration = { 0, 0 };
-        radius = 5;
+        radius = 7;
         attraction_radius = 100;
         repulsion_radius = 60;
         critical_repulsion_radius = 20;
@@ -144,8 +144,8 @@ public:
     }
 
     void render(sf::RenderWindow& window, float screenWidth, float screenHeight) {
-        // Create a circle shape to represent the boid
-        sf::CircleShape shape(radius);
+        // Create a convex shape to represent the boid arrow
+        sf::ConvexShape arrow(4);
 
         // Calculate hue based on boid's position
         float hue = fmod(atan2(coords[1] - screenHeight / 2, coords[0] - screenWidth / 2) + M_PI, 2 * M_PI) / (2 * M_PI);
@@ -175,20 +175,29 @@ public:
             r = c; g = 0.0f; b = x;
         }
 
-        // Adjust brightness and create the boid circle
+        // Adjust brightness
         r = (r + m) * 255;
         g = (g + m) * 255;
         b = (b + m) * 255;
 
-        shape.setFillColor(sf::Color(static_cast<uint8_t>(r), static_cast<uint8_t>(g), static_cast<uint8_t>(b)));
+        arrow.setFillColor(sf::Color(static_cast<uint8_t>(r), static_cast<uint8_t>(g), static_cast<uint8_t>(b)));
 
+        arrow.setPosition(coords[0], coords[1]);
 
-        // Set the position using posX and posY 
-        shape.setPosition(coords[0], coords[1]);
+        // Set the vertices to form a little arrow
+        float arrowSize = 7.0f;
+        arrow.setPoint(0, sf::Vector2f(-arrowSize / 2.0f, -radius));       // Tip of the arrow
+        arrow.setPoint(1, sf::Vector2f(arrowSize / 2.0f, -radius));        // Tip of the arrow
+        arrow.setPoint(2, sf::Vector2f(0, radius));                        // Bottom
+        arrow.setPoint(3, sf::Vector2f(-arrowSize / 2.0f, -radius));       // Back to the tip
 
-        // Draw the shape in the SFML window
-        window.draw(shape);
+        // Rotate the arrow according to boid's velocity
+        float angle = atan2(velocity[1], velocity[0]) * (180.0 / M_PI);
+        arrow.setRotation(angle - 90); // Change angle because of the order in which SFML render vertices
+        
+        window.draw(arrow);
     }
+
 
 private:
 
